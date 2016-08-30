@@ -1,10 +1,11 @@
 import fetch from 'isomorphic-fetch'
 
-export const REQUEST_POSTS = 'REQUEST_POSTS'
-export const RECEIVE_POSTS = 'RECEIVE_POSTS'
-export const SELECT_REDDIT = 'SELECT_REDDIT'
-export const INVALIDATE_REDDIT = 'INVALIDATE_REDDIT'
+//export const REQUEST_POSTS = 'REQUEST_POSTS'
+//export const RECEIVE_POSTS = 'RECEIVE_POSTS'
+//export const SELECT_REDDIT = 'SELECT_REDDIT'
+//export const INVALIDATE_REDDIT = 'INVALIDATE_REDDIT'
 export const SEND_MESSAGE = 'SEND_MESSAGE'
+export const TYPE_TEXT = 'TYPE_TEXT'
 
 export function sendMessage (message)
 {
@@ -13,7 +14,15 @@ export function sendMessage (message)
     message
   }
 }
-export function selectReddit(reddit) {
+export function typeText(text)
+{
+  return {
+    type: TYPE_TEXT,
+    text
+  }
+}
+
+/*export function selectReddit(reddit) {
   return {
     type: SELECT_REDDIT,
     reddit
@@ -69,4 +78,4 @@ export function fetchPostsIfNeeded(reddit) {
       return dispatch(fetchPosts(reddit))
     }
   }
-}
+}*/

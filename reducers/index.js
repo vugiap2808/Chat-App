@@ -1,8 +1,5 @@
 import { combineReducers } from 'redux'
-import {
-  SELECT_REDDIT, INVALIDATE_REDDIT,
-  REQUEST_POSTS, RECEIVE_POSTS, SEND_MESSAGE
-} from '../actions'
+import {TYPE_TEXT, SEND_MESSAGE} from '../actions'
 
 var initialState = {
   messages: [
@@ -25,7 +22,7 @@ var initialState = {
     {
       userName:'user2' , content:'abc'
     },
-  ]
+  ],
 }
 
 
@@ -34,14 +31,25 @@ function sendMessage(state = initialState.messages, action)
 {
   switch (action.type) {
       case SEND_MESSAGE:
-        action.message = {userName:'user4',content: document.getElementById('text')}
         return [...state, action.message]
     default:
       return state
   }
 }
 
-function selectedReddit(state = 'reactjs', action) {
+function typeText(state = '', action)
+{
+  switch (action.type) {
+    case TYPE_TEXT:
+      state = action.text
+      return state
+    default:
+      return state
+  }
+}
+
+
+/*function selectedReddit(state = 'reactjs', action) {
   switch (action.type) {
     case SELECT_REDDIT:
       return action.reddit
@@ -88,12 +96,11 @@ function postsByReddit(state = { }, action) {
     default:
       return state
   }
-}
+}*/
 
 const rootReducer = combineReducers({
-  postsByReddit,
-  selectedReddit,
-  sendMessage
+  sendMessage,
+  typeText
 })
 
 export default rootReducer
