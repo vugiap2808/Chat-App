@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { sendMessage, typeText } from '../actions'
-import Picker from '../components/Picker'
-import Posts from '../components/Posts'
+import pushFireBase from '../actions'
+import { sendMessage, typeText, createServer } from '../actions'
+import ListMessages from '../components/ListMessages'
+import Input from '../components/Input'
 import AppBar from 'material-ui/lib/app-bar';
 import Paper from 'material-ui/lib/paper';
 import style from '../containers/style'
@@ -11,6 +12,7 @@ import TextField from 'material-ui/lib/text-field';
 import FlatButton from 'material-ui/lib/flat-button';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
+import {pushToFireBase, getMessagesFromFireBase} from '../actions/connectFirebase'
 
 
 class App extends Component {
@@ -21,7 +23,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    //const { dispatch, sendMessage, typeText } = this.props
+    this.setState({newMessage: ''})
+    //getMessagesFromFireBase()
+    //this.props.dispatch(createServer())
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,25 +36,23 @@ class App extends Component {
   }
 
   handleChange(e) {
-    this.props.dispatch(typeText(e.target.value))
+        this.setState({newMessage: e.target.value})
+    
   }
 
   handleClick(e) {
-    this.props.dispatch(sendMessage({userName: 'user5',content: this.props.typeText}))
+    //this.props.dispatch(sendMessage({userName: 'user5',content: this.state.newMessage}))
+    pushToFireBase('user5',this.state.newMessage)
+    this.setState({newMessage: ''})
+    //createNewServer(this.state.sendMessage)
   }
+
 
 
   
   render() {
-    const {message} = this.props
-      var list = message.map((item) => {
-        return (
-         <ListItem>{
-              item.userName + ': ' + item.content
-             }
-            </ListItem> 
-        )
-      })
+    const { messages } = this.props
+    
     return (
       <div>
           <AppBar
@@ -62,21 +64,18 @@ class App extends Component {
 
             <Paper style={style} zDepth={5}>
 
-              {list}
+              <ListMessages
+                messages = {messages}
+              ></ListMessages>
               
               <div align="left">
-
-              <TextField hintText="Type a message" 
-                    floatingLabelText="Message.." fullWidth="true"
-                    onChange = { this.handleChange} />
-
-              <RaisedButton label="Send"
-                  onClick = {
-                    this.handleClick
-                  }
-               ></RaisedButton>
-
+                <Input
+                  handleChange= {this.handleChange}
+                  value = {this.state.newMessage}
+                  handleClick = {this.handleClick}
+                ></Input>
               </div>
+
             </Paper>
        
       </div>
@@ -87,9 +86,8 @@ class App extends Component {
 
 
 function mapStateToProps(state) {
-  const {sendMessage, typeText} = state
-  console.log(sendMessage)
-  console.log(typeText)
+  const { sendMessage} = state
+  //console.log(sendMessage)
   /*const {
     isFetching,
     lastUpdated,
@@ -98,16 +96,14 @@ function mapStateToProps(state) {
     isFetching: true,
     items: []
   }*/
-
-  const message=sendMessage
+  const messages=sendMessage
   
   return {
     /*selectedReddit,
     posts,
     isFetching,
     lastUpdated,*/
-    typeText,
-    message
+    messages
   }
 }
 

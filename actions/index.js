@@ -6,6 +6,7 @@ import fetch from 'isomorphic-fetch'
 //export const INVALIDATE_REDDIT = 'INVALIDATE_REDDIT'
 export const SEND_MESSAGE = 'SEND_MESSAGE'
 export const TYPE_TEXT = 'TYPE_TEXT'
+export const PUSH_FIREBASE = 'PUSH_FIREBASE'
 
 export function sendMessage (message)
 {
@@ -14,14 +15,13 @@ export function sendMessage (message)
     message
   }
 }
-export function typeText(text)
-{
-  return {
-    type: TYPE_TEXT,
-    text
-  }
-}
 
+/*export function createServer () {
+  return {
+    type: CREATE_SERVER
+  }
+}*/
+  
 /*export function selectReddit(reddit) {
   return {
     type: SELECT_REDDIT,
